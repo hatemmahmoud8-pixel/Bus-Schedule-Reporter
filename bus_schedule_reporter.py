@@ -6,7 +6,7 @@ import openpyxl
 from openpyxl.styles import PatternFill, Alignment, Font
 from openpyxl.utils import get_column_letter
 
-# === Data fields ===
+# Inputs
 data_fields = [
     ('Blocks', r'Number of blocks\s*:\s*(\d+)'),
     ('Trips', r'Number of in-service trips\s*:\s*(\d+)'),
@@ -31,7 +31,7 @@ color_map = {
 beige_fill = PatternFill(start_color='F5F5DC', end_color='F5F5DC', fill_type='solid')
 revenue_fill = PatternFill(start_color='FFFF99', end_color='FFFF99', fill_type='solid')  # Yellow
 
-# === Utils ===
+# Matching
 def parse_time_string(time_str):
     match = re.match(r'(\d+)h(\d+)', time_str)
     if match:
@@ -152,7 +152,7 @@ def write_to_excel(all_data, booking_code):
                     cell.fill = revenue_fill
         row_idx += 1
 
-    # === Remove TAXI row(s) ===
+    # Remove TAXI row
     for row in range(3, row_idx):
         val = ws.cell(row=row, column=1).value
         if val and "TAXI" in str(val).upper():
@@ -184,7 +184,7 @@ def write_to_excel(all_data, booking_code):
     return output_file, f"{safe_booking_code} - Vehicle Schedule Overview.xlsx"
 
 
-# === Streamlit UI ===
+# Streamlit UI
 st.title("Bus Schedule Reporter")
 st.subheader("Upload PRT files")
 
@@ -214,3 +214,4 @@ if uploaded_files:
                 file_name=filename,
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
+
